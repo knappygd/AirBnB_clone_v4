@@ -57,3 +57,32 @@ fetch('http://0.0.0.0:5001/api/v1/places_search', {
         $('section.places').append(article);
     });
 });
+
+$('button').click(function () {
+    $.ajax({
+      url: 'http://localhost:5001/api/v1/places_search',
+      method: 'POST',
+      data: JSON.stringify({ amenities: Object.keys(amenities) }),
+      contentType: 'application/json',
+      success: (data) => {
+          $('section.places').empty();
+          data.forEach((place) => {
+          const article = document.createElement('article');
+          article.innerHTML = `
+          <div class="title_box">
+            <h2>${place.name}</h2>
+            <div class="price_by_night">${place.price_by_night}</div>
+          </div>
+          <div class="information">
+            <div class="max_guest">${place.max_guest}</div>
+            <div class="number_rooms">${place.number_rooms} Bedrooms</div>
+            <div class="number_bathrooms">${place.number_bathrooms} Bathrooms</div>
+          </div>
+          <div class="description">${place.description}</div>
+        `;
+        $('section.places').append(article);
+        });
+      }
+    });
+  });
+});
